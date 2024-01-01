@@ -29,16 +29,13 @@ const getUser = async (req, res) => {
     const telegramId = req.params.telegramId;
     const user = await User.findOne({ telegramId });
 
-    if (!user) {
-      return res
-        .status(404)
-        .send({ success: false, message: "User not found" });
-    }
+    if (!user) 
+      return res.status(404).send({ message: "User not found" });
 
-    return res.send({ success: true, user });
+    return res.send({ user });
   } catch (error) {
     console.error("Error fetching user:", error);
-    res.status(500).send({ success: false, message: "Internal Server Error" });
+    res.status(500).send({ message: "Internal Server Error" });
   }
 };
 
