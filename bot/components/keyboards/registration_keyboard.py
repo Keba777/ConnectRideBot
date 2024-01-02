@@ -5,7 +5,6 @@ start_keyboard = ReplyKeyboardMarkup(
     [
         [
             KeyboardButton(text="Register"),
-            KeyboardButton(text="Login")
         ]
     ],
     one_time_keyboard=True,
@@ -29,6 +28,16 @@ phone_keyboard = ReplyKeyboardMarkup(
         [KeyboardButton(
             text="Share Phone Number", request_contact=True)
          ]
+    ],
+    one_time_keyboard=True,
+    resize_keyboard=True
+)
+
+profile_keyboard = ReplyKeyboardMarkup(
+    [
+        [
+            KeyboardButton(text="EditProfile"),
+        ]
     ],
     one_time_keyboard=True,
     resize_keyboard=True

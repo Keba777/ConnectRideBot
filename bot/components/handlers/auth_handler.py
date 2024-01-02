@@ -28,18 +28,14 @@ async def driver_menu(update: Update, context: ContextTypes.DEFAULT_TYPE, user_d
 
 async def authentication_handler(update: Update, context: CallbackContext):
     user_id = update.message.from_user.id
-    # Use 'await' to call the coroutine
     user_data_response = await get_user(user_id)
 
-    print(f"User Data Response: {user_data_response}")  # Debug print
-
-    user_data = user_data_response.get('user', {})
-    if 'role' in user_data:
-        role = user_data['role']
+    if user_data_response:
+        role = user_data_response.get('role', '')
         if role == 'passenger':
-            await passenger_menu(update, context, user_data)
+            await passenger_menu(update, context, user_data_response)
         elif role == 'driver':
-            await driver_menu(update, context, user_data)
+            await driver_menu(update, context, user_data_response)
         else:
             await update.message.reply_text("Invalid role. Please sign in with a valid role.")
     else:

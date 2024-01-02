@@ -29,14 +29,32 @@ const getUser = async (req, res) => {
     const telegramId = req.params.telegramId;
     const user = await User.findOne({ telegramId });
 
-    if (!user) 
-      return res.status(404).send({ message: "User not found" });
+    if (!user) return res.status(404).send({ message: "User not found" });
 
-    return res.send({ user });
+    return res.send(user);
   } catch (error) {
     console.error("Error fetching user:", error);
     res.status(500).send({ message: "Internal Server Error" });
   }
 };
 
-export { registerUser, getUser };
+const updateUser = async (req, res) => {
+  try {
+    const telegramId = req.params.telegramId;
+    let user = await User.findOne({ telegramId });
+
+    if (!user) return res.status(404).send({ message: "User not found" });
+
+    user.fullName = req.body.fullName || user.fullName;
+    user.phone = req.body.phone || user.phone;
+    user.role = req.body.role || user.role;
+
+    await user.save();
+    return res.send( user );
+  } catch (error) {
+    console.error("Error updating user:", error);
+    res.status(500).send({ message: "Internal Server Error" });
+  }
+};
+
+export { registerUser, getUser, updateUser };
