@@ -39,4 +39,4 @@ async def authentication_handler(update: Update, context: CallbackContext):
         else:
             await update.message.reply_text("Invalid role. Please sign in with a valid role.")
     else:
-        await update.message.reply_text("User data is incomplete. Please sign in with a valid role.")
+        await update.message.reply_text("User does not exist. Please register with button below.", reply_markup=start_keyboard)

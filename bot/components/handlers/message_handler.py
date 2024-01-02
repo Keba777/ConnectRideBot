@@ -1,47 +1,57 @@
 from telegram import Update
-from telegram.ext import ContextTypes, CallbackContext
-from components.keyboards.registration_keyboard import start_keyboard, profile_keyboard
-from services.user_services import get_user
+from telegram.ext import ContextTypes
 
 
-async def start_handler(update: Update, context: CallbackContext):
-    """Handles the /start command, greets the user, and presents registration and login options."""
-
+async def start_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user_name = update.effective_user.first_name
-    await update.message.reply_text(
-        f"Hello {user_name}! Welcome to the bot.\nPlease choose an option:",
-        reply_markup=start_keyboard
-    )
+    start_text = (
+        f"🚗 **ConnectRideBot** 🚗\n\n"
+        f"Hello {user_name}! Welcome to ConnectRideBot. To get started, type /info to learn about the bot's features."
+    ).replace('!', r'\!').replace('.', r'\.')
+
+    await update.message.reply_text(start_text, parse_mode='MarkdownV2')
+
+
+async def feedback_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    feedback_text = (
+        "📣 **Submit Feedback** 📣\n\n"
+        "To submit feedback about ConnectRideBot, type your feedback message directly in the chat. "
+        "We appreciate your thoughts and suggestions!"
+    ).replace('!', r'\!').replace('.', r'\.')
+
+    await update.message.reply_text(feedback_text, parse_mode='MarkdownV2')
 
 
 async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    await update.message.reply_text("Sure! Here are some commands you can use:\n\n"
-                                    "/start - Start the bot\n"
-                                    "/help - Display this help message\n"
-                                    "/profile - to show profile of the user")
+    help_text = (
+        "🤖 **ConnectRideBot Help** 🤖\n\n"
+        "Here are some commands you can use:\n\n"
+        "/start - Start the bot and choose an option\n"
+        "/info - Learn about ConnectRideBot's features\n"
+        "/auth - Begin the authentication process\n"
+        "/profile - Manage your profile\n"
+        "/feedback - Submit feedback about the bot\n"
+        "/help - Display this help message"
+    ).replace('!', r'\!').replace('.', r'\.')
+
+    await update.message.reply_text(help_text, parse_mode='MarkdownV2')
 
 
-async def profile_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    telegram_id = update.effective_chat.id
-    user_data = await get_user(telegram_id)
+async def info_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    user_name = update.effective_user.first_name
+    info_text = (
+        f"👋 **Welcome to ConnectRideBot, {user_name}!** 👋\n\n"
+        "🚗 ConnectRideBot is your ridesharing companion with key features:\n\n"
+        "🔐 **User Authentication:** Sign up and log in using your Telegram account.\n"
+        "🔄 **Profile Management:** Edit your details like name and contact information.\n"
+        "🚖 **Ride Booking:** Request rides, get fare estimates, and view ride history.\n"
+        "🚦 **Driver Matching:** Receive alerts, know when a driver accepts your request.\n"
+        "⭐ **Rating and Reviews:** Rate rides, provide feedback, and view driver ratings.\n"
+        "📚 **History and Receipts:** View ride history and get digital receipts.\n\n"
+        "Enjoy your rides with ConnectRideBot! 🌟"
+    ).replace('!', r'\!').replace('.', r'\.')
 
-    if user_data:
-        # Format the user data for display
-        user_info_text = (
-            f"Full Name: {user_data.get('fullName', 'N/A')}\n"
-            f"Phone: {user_data.get('phone', 'N/A')}\n"
-            f"Role: {user_data.get('role', 'N/A')}"
-        )
-
-        # Send the formatted user data
-        await update.message.reply_text(
-            f"Your data is as follows:\n\n{user_info_text}\n\nTo edit, click the button below:",
-            reply_markup=profile_keyboard
-        )
-    else:
-        await update.message.reply_text(
-            "No user data found. Please make sure you are registered or contact support."
-        )
+    await update.message.reply_text(info_text, parse_mode='MarkdownV2')
 
 
 async def error(update: Update, context: ContextTypes.DEFAULT_TYPE):
