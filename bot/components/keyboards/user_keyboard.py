@@ -10,26 +10,16 @@ passenger_keyboard = InlineKeyboardMarkup(
     ]
 )
 
-
-register_ride_keyboard = InlineKeyboardMarkup(
+ride_register_keyboard = ReplyKeyboardMarkup(
     [
-        [InlineKeyboardButton(
-            "Do Registration", callback_data='do_registration')],
-        [InlineKeyboardButton("Go Back", callback_data='go_back')],
-    ]
+        [
+            KeyboardButton(text="Request Ride"),
+        ]
+    ],
+    one_time_keyboard=True,
+    resize_keyboard=True
 )
 
-register_cancel_keyboard = InlineKeyboardMarkup(
-    [
-        [InlineKeyboardButton("Go Back", callback_data='go_back_main')],
-    ]
-)
-
-register_page_keyboard = ReplyKeyboardMarkup(
-    [
-        [KeyboardButton("Rigister Page")],
-    ]
-)
 
 driver_keyboard = InlineKeyboardMarkup(
     [

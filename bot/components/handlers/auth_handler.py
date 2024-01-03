@@ -10,11 +10,23 @@ async def auth_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 
 async def passenger_menu(update: Update, context: CallbackContext, user_data: dict):
-    await update.message.reply_text("Welcome to the Passenger Menu!", reply_markup=passenger_keyboard)
+    user = await get_user(update.effective_chat.id)
+    userName = user.get('full_name', '')
+    await update.message.reply_text(
+        f"👋 Welcome, {userName}! You are now in the Passenger Menu. "
+        "Click on the buttons below to request a ride 🚗 or view your ride history 🗂️.",
+        reply_markup=passenger_keyboard
+    )
 
 
 async def driver_menu(update: Update, context: CallbackContext, user_data: dict):
-    await update.message.reply_text("Welcome to the Driver Menu!", reply_markup=driver_keyboard)
+    user = await get_user(update.effective_chat.id)
+    userName = user.get('full_name', '')
+    await update.message.reply_text(
+        f"👋 Hello, {userName}! You are now in the Driver Menu. "
+        "Click on the buttons below to update your availability 📅 or view ride requests 🚗.",
+        reply_markup=driver_keyboard
+    )
 
 
 async def authentication_handler(update: Update, context: CallbackContext):
@@ -28,6 +40,11 @@ async def authentication_handler(update: Update, context: CallbackContext):
         elif role == 'driver':
             await driver_menu(update, context, user_data_response)
         else:
-            await update.message.reply_text("Invalid role. Please sign in with a valid role.")
+            await update.message.reply_text(
+                "❌ Invalid role. Please sign in with a valid role."
+            )
     else:
-        await update.message.reply_text("User does not exist. Please register with button below.", reply_markup=start_keyboard)
+        await update.message.reply_text(
+            "🚫 User does not exist. Please register with the button below.",
+            reply_markup=start_keyboard
+        )
