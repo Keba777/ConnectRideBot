@@ -6,6 +6,7 @@ from components.handlers.registration_handler import registration_handler
 from components.handlers.update_handler import update_handler
 from components.handlers.auth_handler import auth_command
 from components.handlers.profile_handler import profile_command
+from components.callbacks.user_callback import conv_handler
 from config import TOKEN
 
 if __name__ == "__main__":
@@ -17,12 +18,14 @@ if __name__ == "__main__":
     app.add_handler(CommandHandler('info', info_command))
     app.add_handler(CommandHandler('help', help_command))
     app.add_handler(CommandHandler('feedback', feedback_command))
-    app.add_handler(CommandHandler('auth', auth_command))
+    # app.add_handler(CommandHandler('auth', auth_command))
     app.add_handler(CommandHandler('profile', profile_command))
 
+    app.add_handler(conv_handler)
     app.add_handlers(handlers={
         0: [registration_handler],
-        1: [update_handler]
+        1: [update_handler],
+
     })
 
     # Error handling

@@ -42,16 +42,3 @@ async def update_user(telegram_id, updated_user_data):
     except aiohttp.ClientError as e:
         logger.error(f"Error updating user: {e}")
         return None
-
-
-# def update_user(telegram_id, updated_user_data):
-#     url = f"{API_URL}/users/{telegram_id}"
-
-#     try:
-#         response = requests.put(url, json=updated_user_data)
-#         response.raise_for_status()
-#         updated_user = response.json()
-#         return updated_user
-#     except requests.exceptions.RequestException as e:
-#         logger.error(f"Error updating user: {e}")
-#         return None

@@ -2,28 +2,19 @@ from telegram import Update
 from telegram.ext import ContextTypes, CallbackContext
 from services.user_services import get_user
 from components.keyboards.registration_keyboard import start_keyboard
+from components.keyboards.user_keyboard import driver_keyboard, passenger_keyboard
 
 
 async def auth_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await authentication_handler(update, context)
 
 
-async def passenger_menu(update: Update, context: ContextTypes.DEFAULT_TYPE, user_data: dict):
-    await update.message.reply_text(
-        "Welcome to the Passenger Menu!\n"
-        "1. Request a ride\n"
-        "2. View ride history\n"
-        "3. More options..."
-    )
+async def passenger_menu(update: Update, context: CallbackContext, user_data: dict):
+    await update.message.reply_text("Welcome to the Passenger Menu!", reply_markup=passenger_keyboard)
 
 
-async def driver_menu(update: Update, context: ContextTypes.DEFAULT_TYPE, user_data: dict):
-    await update.message.reply_text(
-        "Welcome to the Driver Menu!\n"
-        "1. Accept ride request\n"
-        "2. View ongoing rides\n"
-        "3. More options..."
-    )
+async def driver_menu(update: Update, context: CallbackContext, user_data: dict):
+    await update.message.reply_text("Welcome to the Driver Menu!", reply_markup=driver_keyboard)
 
 
 async def authentication_handler(update: Update, context: CallbackContext):

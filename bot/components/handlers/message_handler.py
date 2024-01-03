@@ -7,7 +7,7 @@ async def start_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     start_text = (
         f"🚗 **ConnectRideBot** 🚗\n\n"
         f"Hello {user_name}! Welcome to ConnectRideBot. To get started, type /info to learn about the bot's features."
-    ).replace('!', r'\!').replace('.', r'\.')
+    ).replace('!', r'\!').replace('.', r'\.').replace('#', r'\.')
 
     await update.message.reply_text(start_text, parse_mode='MarkdownV2')
 
@@ -17,7 +17,7 @@ async def feedback_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
         "📣 **Submit Feedback** 📣\n\n"
         "To submit feedback about ConnectRideBot, type your feedback message directly in the chat. "
         "We appreciate your thoughts and suggestions!"
-    ).replace('!', r'\!').replace('.', r'\.')
+    ).replace('!', r'\!').replace('.', r'\.').replace('#', r'\.')
 
     await update.message.reply_text(feedback_text, parse_mode='MarkdownV2')
 
@@ -32,7 +32,7 @@ async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
         "/profile - Manage your profile\n"
         "/feedback - Submit feedback about the bot\n"
         "/help - Display this help message"
-    ).replace('!', r'\!').replace('.', r'\.')
+    ).replace('!', r'\!').replace('.', r'\.').replace('#', r'\.')
 
     await update.message.reply_text(help_text, parse_mode='MarkdownV2')
 
@@ -49,7 +49,7 @@ async def info_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
         "⭐ **Rating and Reviews:** Rate rides, provide feedback, and view driver ratings.\n"
         "📚 **History and Receipts:** View ride history and get digital receipts.\n\n"
         "Enjoy your rides with ConnectRideBot! 🌟"
-    ).replace('!', r'\!').replace('.', r'\.')
+    ).replace('!', r'\!').replace('.', r'\.').replace('#', r'\.')
 
     await update.message.reply_text(info_text, parse_mode='MarkdownV2')
 
