@@ -1,0 +1,26 @@
+
+/node_modules
+backend/.env
+
+__pycache__/
+*.py[cod]
+*$py.class
+
+
+
+# PEP 582; used by e.g. github.com/David-OConnor/pyflow and github.com/pdm-project/pdm
+__pypackages__/
+bot/.env
+bot/config.py
+
+
+# Environments
+.env
+env/
+<<<<<<< HEAD
+bot-venv/
+=======
+**/venv/
+
+##venv
+venv/
