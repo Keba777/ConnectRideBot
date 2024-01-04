@@ -2,44 +2,49 @@ from telegram import Update
 from telegram.ext import ContextTypes, CallbackContext
 from services.user_services import get_user
 from components.keyboards.registration_keyboard import start_keyboard
-from components.keyboards.user_keyboard import passenger_keyboard
-from components.keyboards.driver_keyboard import driver_keyboard
+from components.keyboards.rate_keyboard import rate_us_keyboard
 
 
-async def auth_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    await authentication_handler(update, context)
+async def feedback_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    await rating_handler(update, context)
 
 
-async def passenger_menu(update: Update, context: CallbackContext, user_data: dict):
+async def passenger_feedback_menu(update: Update, context: CallbackContext, user_data: dict):
     user = await get_user(update.effective_chat.id)
     userName = user.get('fullName', 'N/A')
+
+    greeting_text = f"👋 Welcome, {userName}!"
+    feedback_prompt = "Please share your feedback with us. Your opinion is valuable. 💬"
+    rate_us_command = "To rate our service, click the button below."
+
+    full_message = f"{greeting_text}\n\n{feedback_prompt}\n\n{rate_us_command}"
+
     await update.message.reply_text(
-        f"👋 Welcome, {userName}! You are now in the Passenger Menu. "
-        "Click on the buttons below to request a ride 🚗 or view your ride history 🗂️.",
-        reply_markup=passenger_keyboard
+        full_message,
+        reply_markup=rate_us_keyboard
     )
 
 
-async def driver_menu(update: Update, context: CallbackContext, user_data: dict):
+async def driver_feedback_menu(update: Update, context: CallbackContext, user_data: dict):
     user = await get_user(update.effective_chat.id)
     userName = user.get('fullName', 'N/A')
     await update.message.reply_text(
         f"👋 Hello, {userName}! You are now in the Driver Menu. "
-        "Click on the buttons below to update your availability 📅 or view ride requests 🚗.",
-        reply_markup=driver_keyboard
+        "🌟 Welcome to our rating and feedback system! Please rate your experience with our service."
+
     )
 
 
-async def authentication_handler(update: Update, context: CallbackContext):
+async def rating_handler(update: Update, context: CallbackContext):
     user_id = update.message.from_user.id
     user_data_response = await get_user(user_id)
 
     if user_data_response:
         role = user_data_response.get('role', '')
         if role == 'passenger':
-            await passenger_menu(update, context, user_data_response)
+            await passenger_feedback_menu(update, context, user_data_response)
         elif role == 'driver':
-            await driver_menu(update, context, user_data_response)
+            await driver_feedback_menu(update, context, user_data_response)
         else:
             await update.message.reply_text(
                 "❌ Invalid role. Please sign in with a valid role."

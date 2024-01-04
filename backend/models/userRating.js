@@ -2,9 +2,9 @@ import mongoose from "mongoose";
 import Joi from "joi";
 
 const userRatingSchema = new mongoose.Schema({
-  ride: {
+  user: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "Ride",
+    ref: "User",
     required: true,
   },
   rating: { type: Number, required: true, min: 1, max: 5 },
@@ -14,7 +14,7 @@ const UserRating = mongoose.model("UserRating", userRatingSchema);
 
 function validateUserRating(userRating) {
   const schema = Joi.object({
-    ride: Joi.string().required(),
+    user: Joi.string().required(),
     rating: Joi.number().required().min(1).max(5),
     feedback: Joi.string(),
   });
