@@ -2,7 +2,8 @@ from telegram import Update
 from telegram.ext import ContextTypes, CallbackContext
 from services.user_services import get_user
 from components.keyboards.registration_keyboard import start_keyboard
-from components.keyboards.user_keyboard import driver_keyboard, passenger_keyboard
+from components.keyboards.user_keyboard import passenger_keyboard
+from components.keyboards.driver_keyboard import driver_keyboard
 
 
 async def auth_command(update: Update, context: ContextTypes.DEFAULT_TYPE):

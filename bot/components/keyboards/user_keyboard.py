@@ -19,13 +19,3 @@ ride_register_keyboard = ReplyKeyboardMarkup(
     one_time_keyboard=True,
     resize_keyboard=True
 )
-
-
-driver_keyboard = InlineKeyboardMarkup(
-    [
-        [InlineKeyboardButton("Accept ride request",
-                              callback_data='driver_accept_request')],
-        [InlineKeyboardButton("View ongoing rides",
-                              callback_data='driver_view_ongoing')],
-    ]
-)

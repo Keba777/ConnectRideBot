@@ -17,4 +17,13 @@ def register_ride(user, current_location, destination):
     return response.json()
 
 
-
+async def get_rides(user: str) -> dict:
+    url = f"{API_URL}/rides/{user}"
+    try:
+        async with aiohttp.ClientSession() as session:
+            async with session.get(url) as response:
+                response.raise_for_status()
+                return await response.json()
+    except aiohttp.ClientError as e:
+        logger.error(f"Error fetching user: {e}")
+        return None
