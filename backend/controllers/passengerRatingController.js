@@ -12,15 +12,15 @@ async function createPassengerRating(req, res) {
   if (!isValidUser)
     return res.status(403).send("Invalid user or user is not a passenger.");
 
-  const userRating = PassengerRating({
+  const passengerRating = PassengerRating({
     user: req.body.user,
     rating: req.body.rating,
     feedback: req.body.feedback,
   });
 
   try {
-    await userRating.save();
-    res.status(201).send(userRating);
+    await passengerRating.save();
+    res.status(201).send(passengerRating);
   } catch (err) {
     res.status(500).send(err.message);
   }
