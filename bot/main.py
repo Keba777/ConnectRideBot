@@ -4,7 +4,7 @@ from telegram.ext import (ApplicationBuilder, CallbackQueryHandler,
                           CommandHandler)
 
 from components.callbacks.driver_callback import driver_callback_handler
-from components.callbacks.user_callback import passenger_callback_handler
+from bot.components.callbacks.passenger_callback import passenger_callback_handler
 
 from components.handlers.auth_handler import auth_command
 from components.handlers.feedback_handler import feedback_command

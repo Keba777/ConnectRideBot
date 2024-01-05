@@ -55,5 +55,5 @@ async def edit_page(update: Update, page=1):
     )
 
 
-async def start(update: Update, context: CallbackContext) -> None:
+async def start_test(update: Update, context: CallbackContext) -> None:
     await send_page(update.message)
