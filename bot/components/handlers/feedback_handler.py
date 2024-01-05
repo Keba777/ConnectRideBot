@@ -2,7 +2,7 @@ from telegram import Update
 from telegram.ext import ContextTypes, CallbackContext
 from services.user_services import get_user
 from components.keyboards.registration_keyboard import start_keyboard
-from components.keyboards.rate_keyboard import rate_us_keyboard
+from components.keyboards.rate_keyboard import rate_us_keyboard, rate_passenger_keyboard
 
 
 async def feedback_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -28,10 +28,16 @@ async def passenger_feedback_menu(update: Update, context: CallbackContext, user
 async def driver_feedback_menu(update: Update, context: CallbackContext, user_data: dict):
     user = await get_user(update.effective_chat.id)
     userName = user.get('fullName', 'N/A')
-    await update.message.reply_text(
-        f"👋 Hello, {userName}! You are now in the Driver Menu. "
-        "🌟 Welcome to our rating and feedback system! Please rate your experience with our service."
 
+    greeting_text = f"👋 Welcome, {userName}!"
+    feedback_prompt = "Please share your feedback with us. Your opinion is valuable. 💬"
+    rate_us_command = "To rate passenger, click the button below."
+
+    full_message = f"{greeting_text}\n\n{feedback_prompt}\n\n{rate_us_command}"
+
+    await update.message.reply_text(
+        full_message,
+        reply_markup=rate_passenger_keyboard
     )
 
 

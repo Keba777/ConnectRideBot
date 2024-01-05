@@ -1,7 +1,7 @@
 import asyncio
-
+from telegram import Update
 from telegram.ext import (ApplicationBuilder, CallbackQueryHandler,
-                          CommandHandler, MessageHandler, filters)
+                          CommandHandler)
 
 from components.callbacks.driver_callback import driver_callback_handler
 from components.callbacks.user_callback import passenger_callback_handler
@@ -15,6 +15,7 @@ from components.handlers.registration_handler import registration_handler
 from components.handlers.ride_register_handler import register_role_handler
 from components.handlers.update_handler import update_handler
 from components.handlers.passenger_rating_handler import submit_passenger_rating
+from components.handlers.driver_rating_handler import submit_driver_rating
 
 from config import TOKEN
 
@@ -31,25 +32,27 @@ def main():
     app.add_handler(CommandHandler('profile', profile_command))
     app.add_handler(CommandHandler('start', start_command))
 
-    # Messages
-    app.add_handler(submit_passenger_rating)
-    app.add_handler(register_role_handler)
+    # Message handlers
     app.add_handlers(handlers={
-        0: [registration_handler],
-        1: [update_handler],
-
+        0: [submit_driver_rating],
+        1: [submit_passenger_rating],
+        2: [registration_handler],
+        3: [register_role_handler],
+        4: [update_handler]
     })
 
     # Callbacks
-    app.add_handler(CallbackQueryHandler(driver_callback_handler))
-    app.add_handler(CallbackQueryHandler(passenger_callback_handler))
+    app.add_handlers(handlers={
+        0: [CallbackQueryHandler(passenger_callback_handler)],
+        1: [CallbackQueryHandler(driver_callback_handler)]
+
+    })
 
     # Error handling
     app.add_error_handler(error)
 
     print("Polling...")
-    asyncio.run(app.run_polling(poll_interval=5))
-    # app.run_polling(poll_interval=5)
+    asyncio.run(app.run_polling(allowed_updates=Update.ALL_TYPES))
 
 
 if __name__ == "__main__":

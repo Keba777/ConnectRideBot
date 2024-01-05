@@ -14,3 +14,14 @@ def create_passenger_rating(user, rating, feedback):
     }
     response = requests.post(url, json=payload)
     return response.json()
+
+
+def create_driver_rating(user, rating, feedback):
+    url = f"{API_URL}/driverRatings"
+    payload = {
+        "user": user,
+        "rating": rating,
+        "feedback": feedback,
+    }
+    response = requests.post(url, json=payload)
+    return response.json()
