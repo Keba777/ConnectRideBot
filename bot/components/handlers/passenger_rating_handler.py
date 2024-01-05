@@ -1,7 +1,7 @@
 from telegram import Update
 from telegram.ext import CallbackContext, ConversationHandler, MessageHandler, filters
 from services.user_services import get_user
-from services.rating_services import register_user_rating
+from services.rating_services import create_passenger_rating
 
 RATING, FEEDBACK = range(2)
 
@@ -41,7 +41,7 @@ async def handle_feedback_input(update: Update, context: CallbackContext) -> int
     user = context.user_data['user']
     rating = context.user_data['rating']
 
-    response = register_user_rating(user, rating, feedback)
+    response = create_passenger_rating(user, rating, feedback)
     if response:
         await context.bot.send_message(chat_id=update.effective_chat.id, text="Thank you for submitting feedback! Your opinion matters.")
     else:
@@ -51,7 +51,7 @@ async def handle_feedback_input(update: Update, context: CallbackContext) -> int
     return ConversationHandler.END
 
 
-submit_user_rating = ConversationHandler(
+submit_passenger_rating = ConversationHandler(
     entry_points=[MessageHandler(
         filters.TEXT & ~filters.COMMAND, handle_rating)],
     states={

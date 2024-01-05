@@ -5,8 +5,8 @@ import logging
 logger = logging.getLogger(__name__)
 
 
-def register_user_rating(user, rating, feedback):
-    url = f"{API_URL}/userRatings"
+def create_passenger_rating(user, rating, feedback):
+    url = f"{API_URL}/passengerRatings"
     payload = {
         "user": user,
         "rating": rating,

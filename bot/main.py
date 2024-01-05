@@ -14,7 +14,7 @@ from components.handlers.profile_handler import profile_command
 from components.handlers.registration_handler import registration_handler
 from components.handlers.ride_register_handler import register_role_handler
 from components.handlers.update_handler import update_handler
-from components.handlers.user_rating_handler import submit_user_rating
+from components.handlers.passenger_rating_handler import submit_passenger_rating
 
 from config import TOKEN
 
@@ -32,7 +32,7 @@ def main():
     app.add_handler(CommandHandler('start', start_command))
 
     # Messages
-    app.add_handler(submit_user_rating)
+    app.add_handler(submit_passenger_rating)
     app.add_handler(register_role_handler)
     app.add_handlers(handlers={
         0: [registration_handler],
