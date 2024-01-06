@@ -1,22 +1,21 @@
 import { Ride, validateRide, validateUserForRide } from "../models/ride.js";
-import { User } from "../models/user.js";
 
 async function createRide(req, res) {
-  const { error } = validateRide(req.body);
-  if (error) return res.status(400).send(error.details[0].message);
-
-  const isValidUser = await validateUserForRide(req.body.user);
-  if (!isValidUser)
-    return res.status(403).send("Invalid user or user is not a passenger.");
-
-  const ride = new Ride({
-    user: req.body.user,
-    currentLocation: req.body.currentLocation,
-    destination: req.body.destination,
-    status: req.body.status,
-  });
-
   try {
+    const { error } = validateRide(req.body);
+    if (error) return res.status(400).send(error.details[0].message);
+
+    const isValidUser = await validateUserForRide(req.body.user);
+    if (!isValidUser)
+      return res.status(403).send("Invalid user or user is not a passenger.");
+
+    const ride = new Ride({
+      user: req.body.user,
+      currentLocation: req.body.currentLocation,
+      destination: req.body.destination,
+      status: req.body.status,
+    });
+
     await ride.save();
     res.status(201).send(ride);
   } catch (err) {
@@ -26,23 +25,29 @@ async function createRide(req, res) {
 
 async function getRides(req, res) {
   try {
-    const rides = await Ride.find();
+    const rides = await Ride.find().populate("user").populate("driver");
     const transformedRides = [];
 
     for (const ride of rides) {
-      const user = await User.findById(ride.user);
-      if (user) {
-        const transformedRide = {
-          user: {
-            fullName: user.fullName,
-            phone: user.phone,
-          },
-          currentLocation: ride.currentLocation,
-          destination: ride.destination,
-          status: ride.status,
-        };
-        transformedRides.push(transformedRide);
-      }
+      const transformedRide = {
+        _id: ride._id,
+        user: {
+          telegramId: ride.user.telegramId,
+          fullName: ride.user.fullName,
+          phone: ride.user.phone,
+        },
+        driver: ride.driver
+          ? {
+              telegramId: ride.driver.telegramId,
+              fullName: ride.driver.fullName,
+              phone: ride.driver.phone,
+            }
+          : null,
+        currentLocation: ride.currentLocation,
+        destination: ride.destination,
+        status: ride.status,
+      };
+      transformedRides.push(transformedRide);
     }
 
     res.status(200).send(transformedRides);
@@ -51,4 +56,22 @@ async function getRides(req, res) {
   }
 }
 
-export { createRide, getRides };
+async function updateRide(req, res) {
+  try {
+    const rideId = req.params.rideId;
+    const { error } = validateRide(req.body);
+    if (error) return res.status(400).send(error.details[0].message);
+
+    const ride = await Ride.findById(rideId);
+    if (!ride) return res.status(404).send("Ride not found");
+
+    Object.assign(ride, req.body);
+
+    await ride.save();
+    res.status(200).send(ride);
+  } catch (err) {
+    res.status(500).send(err.message);
+  }
+}
+
+export { createRide, getRides, updateRide };

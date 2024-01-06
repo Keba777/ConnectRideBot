@@ -10,6 +10,11 @@ const rideSchema = new mongoose.Schema({
     ref: "User",
     required: true,
   },
+  driver: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+    default: null,
+  },
   currentLocation: { type: String, required: true },
   destination: { type: String, required: true },
   status: { type: String, enum: validStatus, default: "requested" },
@@ -19,9 +24,10 @@ const Ride = mongoose.model("Ride", rideSchema);
 
 function validateRide(ride) {
   const schema = Joi.object({
-    user: Joi.string().required(),
-    currentLocation: Joi.string().required(),
-    destination: Joi.string().required(),
+    user: Joi.string(),
+    driver: Joi.string().allow(null),
+    currentLocation: Joi.string(),
+    destination: Joi.string(),
     status: Joi.string().valid(...validStatus),
   });
 
@@ -34,4 +40,10 @@ async function validateUserForRide(userId) {
   return user.role === "passenger";
 }
 
-export { Ride, validateRide, validateUserForRide };
+async function validateUserAsDriver(userId) {
+  const user = await User.findById(userId);
+  if (!user) return false;
+  return user.role === "driver";
+}
+
+export { Ride, validateRide, validateUserForRide, validateUserAsDriver };
