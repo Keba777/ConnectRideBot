@@ -23,8 +23,9 @@ async def passenger_menu(update: Update, context: CallbackContext, user_data: di
 async def driver_menu(update: Update, context: CallbackContext, user_data: dict):
     user = await get_user(update.effective_chat.id)
     userName = user.get('fullName', 'N/A')
+
     await update.message.reply_text(
-        f"👋 Hello, {userName}! You are now in the Driver Menu. "
+        f"👋 Hello, {userName}! You are now in the Driver Menu.\n"
         "Click on the buttons below to update your availability 📅 or view ride requests 🚗.",
         reply_markup=driver_keyboard
     )

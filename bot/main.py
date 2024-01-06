@@ -1,22 +1,25 @@
 import asyncio
+
 from telegram import Update
-from telegram.ext import (ApplicationBuilder, CallbackQueryHandler,
-                          CommandHandler)
+from telegram.ext import (
+    ApplicationBuilder, CallbackQueryHandler, CommandHandler)
 
 from components.callbacks.driver_callback import driver_callback_handler
-from bot.components.callbacks.passenger_callback import passenger_callback_handler
+from components.callbacks.passenger_callback import passenger_callback_handler
+
+from components.handlers.driver_handler import (
+    driver_command, driver_page_callback, accept_ride_callback)
 
 from components.handlers.auth_handler import auth_command
+from components.handlers.driver_rating_handler import submit_driver_rating
 from components.handlers.feedback_handler import feedback_command
 from components.handlers.message_handler import (error, help_command,
                                                  info_command, start_command)
+from components.handlers.passenger_rating_handler import submit_passenger_rating
 from components.handlers.profile_handler import profile_command
 from components.handlers.registration_handler import registration_handler
 from components.handlers.ride_register_handler import register_role_handler
 from components.handlers.update_handler import update_handler
-from components.handlers.passenger_rating_handler import submit_passenger_rating
-from components.handlers.driver_rating_handler import submit_driver_rating
-
 from config import TOKEN
 
 
@@ -30,6 +33,7 @@ def main():
     app.add_handler(CommandHandler('help', help_command))
     app.add_handler(CommandHandler('info', info_command))
     app.add_handler(CommandHandler('profile', profile_command))
+    app.add_handler(CommandHandler('rideinfo', driver_command))
     app.add_handler(CommandHandler('start', start_command))
 
     # Message handlers
@@ -43,9 +47,14 @@ def main():
 
     # Callbacks
     app.add_handlers(handlers={
-        0: [CallbackQueryHandler(passenger_callback_handler)],
-        1: [CallbackQueryHandler(driver_callback_handler)]
+        0: [CallbackQueryHandler(
+            driver_page_callback, pattern='^page#')],
+        1: [CallbackQueryHandler(driver_callback_handler)],
+        2: [CallbackQueryHandler(passenger_callback_handler)],
+        3: [CallbackQueryHandler(accept_ride_callback, pattern='^accept#')]
 
+        # 3: [CallbackQueryHandler(accept_request_callback, pattern=r'^accept#\d+$')],
+        # 4: [CallbackQueryHandler(go_back_callback, pattern=r'^back$')]
     })
 
     # Error handling

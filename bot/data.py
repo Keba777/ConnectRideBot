@@ -1,7 +1,4 @@
-from telegram import InlineKeyboardButton, InlineKeyboardMarkup, Update
-from telegram.ext import CallbackContext
-from telegram_bot_pagination import InlineKeyboardPaginator
-
+# -*- coding: utf-8 -*-
 
 character_pages = [
     '*Harry*\nHarry Potter is the Boy Who Lived, the Chosen One, the hero of the Wizarding world. He grew up with Muggles, and then came to Hogwarts where he faced dangers and terrors beyond his years. He, along with his friends Hermione Granger, Ron Weasley and Neville Longbottom, destroyed Voldemort’s Horcruxes. Harry faced Voldemort at the end of a climactic battle in Hogwarts castle and defeated him.',
@@ -16,44 +13,3 @@ character_pages = [
     '*Dobby*\nDobby was a house-elf, for years indentured to the Malfoy family, until his admiration for Harry Potter goaded him into trying to warn Harry against coming to school in his second year because he knew what Lucius was planning with the diary.',
     '*Moody*\nAlastor “Mad-Eye” Moody is a retired Auror, considered one of the best Dark Wizard catchers the Ministry has ever had.',
 ]
-
-
-async def get_character(update: Update, context: CallbackContext) -> None:
-    await send_page(update.message)
-
-
-async def characters_page_callback(update: Update, context: CallbackContext) -> None:
-    page = int(update.callback_query.data.split('#')[1])
-    await edit_page(update.message, page)
-
-
-async def send_page(update: Update, page=1):
-    paginator = InlineKeyboardPaginator(
-        len(character_pages),
-        current_page=page,
-        data_pattern='character#{page}')
-
-    keyboard = [[InlineKeyboardButton('Next', callback_data='character#next')]]
-
-    await update.message.reply_text(
-        character_pages[page - 1],
-        reply_markup=InlineKeyboardMarkup(keyboard + paginator.markup)
-    )
-
-
-async def edit_page(update: Update, page=1):
-    paginator = InlineKeyboardPaginator(
-        len(character_pages),
-        current_page=page,
-        data_pattern='character#{page}')
-
-    keyboard = [[InlineKeyboardButton('Next', callback_data='character#next')]]
-
-    await update.message.edit_text(
-        character_pages[page - 1],
-        reply_markup=InlineKeyboardMarkup(keyboard + paginator.markup)
-    )
-
-
-async def start_test(update: Update, context: CallbackContext) -> None:
-    await send_page(update.message)
