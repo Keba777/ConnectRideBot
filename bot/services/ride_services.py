@@ -29,6 +29,18 @@ async def get_rides(user: str) -> dict:
         return None
 
 
+async def get_user_rides(passengerId: str) -> dict:
+    url = f"{API_URL}/rides/{passengerId}"
+    try:
+        async with aiohttp.ClientSession() as session:
+            async with session.get(url) as response:
+                response.raise_for_status()
+                return await response.json()
+    except aiohttp.ClientError as e:
+        logger.error(f"Error fetching user: {e}")
+        return None
+
+
 async def update_ride(ride_id, updated_user_data):
     url = f"{API_URL}/rides/{ride_id}"
 

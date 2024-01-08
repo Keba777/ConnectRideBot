@@ -74,4 +74,29 @@ async function updateRide(req, res) {
   }
 }
 
-export { createRide, getRides, updateRide };
+async function getRidesForUser(req, res) {
+  const passengerId = req.params.passengerId;
+
+  try {
+    const rides = await Ride.find({ user: passengerId }).populate("driver");
+    const transformedRides = rides.map((ride) => ({
+      _id: ride._id,
+      driver: ride.driver
+        ? {
+            telegramId: ride.driver.telegramId,
+            fullName: ride.driver.fullName,
+            phone: ride.driver.phone,
+          }
+        : null,
+      currentLocation: ride.currentLocation,
+      destination: ride.destination,
+      status: ride.status,
+    }));
+
+    res.status(200).json(transformedRides);
+  } catch (err) {
+    res.status(500).send(err.message);
+  }
+}
+
+export { createRide, getRides, updateRide, getRidesForUser };
