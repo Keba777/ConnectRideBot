@@ -2,7 +2,7 @@ from telegram import Update
 from telegram.ext import ContextTypes, CallbackContext
 from services.user_services import get_user
 from components.keyboards.registration_keyboard import start_keyboard
-from components.keyboards.user_keyboard import passenger_keyboard
+from components.keyboards.passenger_keyboard import passenger_keyboard
 from components.keyboards.driver_keyboard import driver_keyboard
 
 

@@ -7,7 +7,7 @@ CURRENT_LOCATION, DESTINATION = range(2)
 
 
 async def handle_registration(update: Update, context: CallbackContext) -> int:
-    if update.message.text.strip().lower() == "request ride":
+    if update.message.text.strip().lower() == "request a ride":
         if await get_user(update.effective_chat.id):
             user = await get_user(update.effective_chat.id)
             userId = user['_id']

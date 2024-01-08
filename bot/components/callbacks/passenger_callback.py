@@ -1,6 +1,6 @@
 from telegram import Update
 from telegram.ext import CallbackContext
-from components.keyboards.user_keyboard import ride_register_keyboard
+from bot.components.keyboards.passenger_keyboard import ride_register_keyboard
 
 
 async def passenger_callback_handler(update: Update, context: CallbackContext):
