@@ -27,3 +27,17 @@ async def get_rides(user: str) -> dict:
     except aiohttp.ClientError as e:
         logger.error(f"Error fetching user: {e}")
         return None
+
+
+async def update_ride(ride_id, updated_user_data):
+    url = f"{API_URL}/rides/{ride_id}"
+
+    try:
+        async with aiohttp.ClientSession() as session:
+            async with session.put(url, json=updated_user_data) as response:
+                response.raise_for_status()
+                updated_user = await response.json()
+                return updated_user
+    except aiohttp.ClientError as e:
+        logger.error(f"Error updating user: {e}")
+        return None

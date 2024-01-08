@@ -2,13 +2,13 @@ import asyncio
 
 from telegram import Update
 from telegram.ext import (
-    ApplicationBuilder, CallbackQueryHandler, CommandHandler)
+    ApplicationBuilder, CallbackQueryHandler, CommandHandler, MessageHandler, filters)
 
-from components.callbacks.driver_callback import driver_callback_handler
+from components.callbacks.driver_callback import driver_callback_handler, accept_ride_callback
 from components.callbacks.passenger_callback import passenger_callback_handler
 
 from components.handlers.driver_handler import (
-    driver_command, driver_page_callback, accept_ride_callback)
+    driver_command, driver_page_callback)
 
 from components.handlers.auth_handler import auth_command
 from components.handlers.driver_rating_handler import submit_driver_rating
@@ -19,13 +19,16 @@ from components.handlers.passenger_rating_handler import submit_passenger_rating
 from components.handlers.profile_handler import profile_command
 from components.handlers.registration_handler import registration_handler
 from components.handlers.ride_register_handler import register_role_handler
-from components.handlers.update_handler import update_handler
+from components.handlers.profile_update_handler import update_handler
 from config import TOKEN
 
 
 def main():
     print("Starting bot...")
     app = ApplicationBuilder().token(TOKEN).build()
+
+    # app.add_handler(MessageHandler(
+    #     filters.TEXT & ~filters.COMMAND, handle_accept_request))
 
     # Commands
     app.add_handler(CommandHandler('auth', auth_command))
