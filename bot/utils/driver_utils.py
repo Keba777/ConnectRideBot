@@ -16,3 +16,9 @@ def format_ride_info(ride_request):
 def filter_rides_by_status(rides, status):
     filtered_rides = [ride for ride in rides if ride.get('status') == status]
     return filtered_rides
+
+
+def filter_rides_by_driver(rides, driver_telegram_id):
+    filtered_rides = [ride for ride in rides if ride.get(
+        'driver', {}).get('telegramId') == driver_telegram_id]
+    return filtered_rides
