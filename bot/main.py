@@ -4,7 +4,7 @@ from telegram import Update
 from telegram.ext import (
     ApplicationBuilder, CallbackQueryHandler, CommandHandler, MessageHandler, filters)
 
-from components.callbacks.driver_callback import driver_accept_callback, driver_complete_callback
+from components.callbacks.driver_callback import driver_accept_callback, driver_complete_callback, driver_go_back_callback
 from components.callbacks.passenger_callback import passenger_callback_handler
 
 from components.handlers.driver_handler import (
@@ -59,7 +59,8 @@ def main():
             driver_complete_page_callback, pattern='^page#')],
         2: [CallbackQueryHandler(driver_accept_callback, pattern='^accept#')],
         3: [CallbackQueryHandler(driver_complete_callback, pattern='^complete#')],
-        4: [CallbackQueryHandler(passenger_callback_handler)],
+        4: [CallbackQueryHandler(driver_go_back_callback, pattern='back')],
+        5: [CallbackQueryHandler(passenger_callback_handler)],
     })
 
     # Error handling

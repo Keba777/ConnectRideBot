@@ -2,6 +2,7 @@ from telegram import Update
 from telegram.ext import CallbackContext
 from services.user_services import get_user
 from services.ride_services import update_ride
+from components.keyboards.driver_keyboard import driver_keyboard
 
 
 async def driver_accept_callback(update: Update, context: CallbackContext):
@@ -43,3 +44,12 @@ async def driver_complete_callback(update: Update, context: CallbackContext):
             reply_markup=None,
             parse_mode='HTML'
         )
+
+
+async def driver_go_back_callback(update: Update, context: CallbackContext):
+    user_id = update.effective_chat.id
+    await context.bot.send_message(
+        chat_id=user_id,
+        text="Going back to driver menu...",
+        reply_markup=driver_keyboard
+    )
