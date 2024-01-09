@@ -18,7 +18,8 @@ accept_button = InlineKeyboardButton(
     'Accept request', callback_data='accept#{}')
 complete_button = InlineKeyboardButton(
     'Complete ride', callback_data='complete#{}')
-go_back_button = InlineKeyboardButton('Go back', callback_data='back')
+go_back_button = InlineKeyboardButton(
+    'Go back', callback_data='back_driver_menu')
 
 
 def create_accept_paginator(total_pages, current_page, data_pattern):
