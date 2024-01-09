@@ -22,7 +22,7 @@ from components.handlers.message_handler import (error, help_command,
                                                  info_command, start_command)
 from components.handlers.passenger_rating_handler import submit_passenger_rating
 from components.handlers.profile_handler import profile_command
-from components.handlers.registration_handler import registration_handler
+from components.handlers.user_registration_handler import user_registration_handler
 from components.handlers.ride_register_handler import register_role_handler
 from components.handlers.profile_update_handler import update_handler
 from components.handlers.passenger_handler import handle_ride_history
@@ -43,6 +43,15 @@ def main():
     app.add_handler(CommandHandler('start', start_command))
     app.add_handler(CommandHandler('tariff', tariff_command))
 
+    # Conversation handlers
+    app.add_handlers(handlers={
+        0: [user_registration_handler],
+        1: [submit_driver_rating],
+        2: [submit_passenger_rating],
+        3: [register_role_handler],
+        4: [update_handler]
+    })
+
     # Message handlers
     app.add_handlers(handlers={
         0: [MessageHandler(
@@ -51,14 +60,6 @@ def main():
             filters.TEXT & ~filters.COMMAND, driver_complete_command)],
         2: [MessageHandler(
             filters.TEXT & ~filters.COMMAND, handle_ride_history)],
-    })
-    # Message handlers
-    app.add_handlers(handlers={
-        0: [submit_driver_rating],
-        1: [submit_passenger_rating],
-        2: [registration_handler],
-        3: [register_role_handler],
-        4: [update_handler]
     })
 
     # Callbacks

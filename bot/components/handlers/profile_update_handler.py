@@ -1,3 +1,4 @@
+import re
 from telegram import Update
 from telegram.ext import CallbackContext, ConversationHandler, MessageHandler, filters
 from services.user_services import update_user, register_user
@@ -25,17 +26,15 @@ async def handle_full_name_input(update: Update, context: CallbackContext) -> in
 
 async def handle_phone_input(update: Update, context: CallbackContext) -> int:
     phone = None
-    if update.message.text:
-        phone = update.message.text.strip()
-    elif update.message.contact:
+    if update.message.contact:
         phone = update.message.contact.phone_number
 
-    if phone:
+    if phone and is_valid_phone(phone):
         context.user_data['phone'] = phone
-        await context.bot.send_message(chat_id=update.effective_chat.id, text="Awesome! Now, please enter your role ", reply_markup=role_keyboard)
+        await context.bot.send_message(chat_id=update.effective_chat.id, text="Awesome! Now, please enter your role", reply_markup=role_keyboard)
         return ROLE
     else:
-        await context.bot.send_message(chat_id=update.effective_chat.id, text="Invalid input. Please enter a valid phone number or share your contact.")
+        await context.bot.send_message(chat_id=update.effective_chat.id, text="Invalid input. Please share your contact to provide a valid phone number.", reply_markup=phone_keyboard)
         return PHONE
 
 
@@ -47,15 +46,19 @@ async def handle_role_input(update: Update, context: CallbackContext) -> int:
 
     data = {'fullName': full_name, 'phone': phone, 'role': role}
 
-    response = await update_user(telegram_id, data)
-    if response:
-        await context.bot.send_message(chat_id=update.effective_chat.id, text="Update successful!")
+    if is_valid_role(role):
+        response = await update_user(telegram_id, data)
+        if response:
+            await context.bot.send_message(chat_id=update.effective_chat.id, text="Update successful!")
+        else:
+            await context.bot.send_message(chat_id=update.effective_chat.id, text="Updating failed. Please try again.")
+
+        context.user_data.clear()
+        return ConversationHandler.END
+
     else:
-        await context.bot.send_message(chat_id=update.effective_chat.id, text="Updating failed. Please try again.")
-
-    context.user_data.clear()
-    return ConversationHandler.END
-
+        await context.bot.send_message(chat_id=update.effective_chat.id, text="Invalid role. Please enter 'passenger' or 'driver' .")
+        return ROLE
 
 update_handler = ConversationHandler(
     entry_points=[MessageHandler(
@@ -67,3 +70,12 @@ update_handler = ConversationHandler(
     },
     fallbacks=[MessageHandler(filters.TEXT, handle_update)],
 )
+
+
+def is_valid_phone(phone):
+    phone_pattern = re.compile(r'^\+?[1-9]\d{1,14}$')
+    return bool(re.match(phone_pattern, phone))
+
+
+def is_valid_role(role):
+    return role in ['passenger', 'driver']
