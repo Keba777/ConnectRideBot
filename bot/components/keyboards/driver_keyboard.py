@@ -1,5 +1,5 @@
 from telegram import (ReplyKeyboardMarkup, KeyboardButton,
-                      InlineKeyboardButton, InlineKeyboardMarkup)
+                      InlineKeyboardButton)
 from telegram_bot_pagination import InlineKeyboardPaginator
 
 driver_keyboard = ReplyKeyboardMarkup(
@@ -11,15 +11,6 @@ driver_keyboard = ReplyKeyboardMarkup(
     ],
     one_time_keyboard=True,
     resize_keyboard=True
-)
-
-driver_menu_keyboard = InlineKeyboardMarkup(
-    [
-        [InlineKeyboardButton("Accept ride request",
-                              callback_data='accept_ride_request')],
-        [InlineKeyboardButton("View Ongoing Rides",
-                              callback_data='view_accepted_rides')],
-    ]
 )
 
 

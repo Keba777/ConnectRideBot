@@ -48,6 +48,7 @@ async function getRides(req, res) {
         currentLocation: ride.currentLocation,
         destination: ride.destination,
         status: ride.status,
+        fare: ride.fare,
       };
       transformedRides.push(transformedRide);
     }
@@ -93,6 +94,7 @@ async function getRidesForUser(req, res) {
       currentLocation: ride.currentLocation,
       destination: ride.destination,
       status: ride.status,
+      fare: ride.fare,
     }));
 
     res.status(200).json(transformedRides);

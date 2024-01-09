@@ -18,6 +18,7 @@ const rideSchema = new mongoose.Schema({
   currentLocation: { type: String, required: true },
   destination: { type: String, required: true },
   status: { type: String, enum: validStatus, default: "requested" },
+  fare: { type: Number, default: null },
 });
 
 const Ride = mongoose.model("Ride", rideSchema);
@@ -29,6 +30,7 @@ function validateRide(ride) {
     currentLocation: Joi.string(),
     destination: Joi.string(),
     status: Joi.string().valid(...validStatus),
+    fare: Joi.number().allow(null),
   });
 
   return schema.validate(ride);
