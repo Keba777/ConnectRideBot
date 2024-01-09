@@ -8,9 +8,11 @@ from components.callbacks.driver_callback import driver_accept_callback, driver_
 from components.callbacks.passenger_ongoing_callback import passenger_ongoing_callback, passenger_ongoing_page_callback
 from components.callbacks.passenger_completed_callback import passenger_completed_callback, passenger_complete_page_callback
 from components.callbacks.passenger_callback import go_back_to_history, go_back_to_passenger_menu, passenger_cancel_callback
+from components.callbacks.driver_accept_callback import driver_accept_page_callback
+from components.callbacks.driver_complete_callback import driver_complete_page_callback
 
 from components.handlers.driver_handler import (
-    driver_accept_command, driver_complete_command, driver_accept_page_callback, driver_complete_page_callback)
+    driver_accept_command, driver_complete_command)
 
 
 from components.handlers.auth_handler import auth_command
