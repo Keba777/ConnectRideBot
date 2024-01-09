@@ -33,7 +33,7 @@ async def handle_destination_input(update: Update, context: CallbackContext) -> 
 
     response = register_ride(user, current_location, destination)
     if response:
-        await context.bot.send_message(chat_id=update.effective_chat.id, text="Registration successful!")
+        await context.bot.send_message(chat_id=update.effective_chat.id, text="Your ride request has been accepted successfully! 🚗🎉")
     else:
         await context.bot.send_message(chat_id=update.effective_chat.id, text="Registration failed. Please try again.")
 

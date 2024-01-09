@@ -49,17 +49,14 @@ def main():
         1: [submit_driver_rating],
         2: [submit_passenger_rating],
         3: [register_role_handler],
-        4: [profile_update_handler]
-    })
-
-    # Message handlers
-    app.add_handlers(handlers={
-        0: [MessageHandler(
+        4: [profile_update_handler],
+        5: [MessageHandler(
             filters.TEXT & ~filters.COMMAND, driver_accept_command)],
-        1: [MessageHandler(
+        6: [MessageHandler(
             filters.TEXT & ~filters.COMMAND, driver_complete_command)],
-        2: [MessageHandler(
+        7: [MessageHandler(
             filters.TEXT & ~filters.COMMAND, handle_ride_history)],
+
     })
 
     # Callbacks

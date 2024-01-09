@@ -9,7 +9,7 @@ async def driver_accept_callback(update: Update, context: CallbackContext):
     query = update.callback_query
     await query.answer()
 
-    current_ride_info = context.user_data.get('current_ride_info', '')
+    current_ride_info = context.user_data.get('current_ride_info', {})
     ride_id = current_ride_info.get('_id', '')
 
     user_data = await get_user(update.effective_chat.id)
@@ -18,11 +18,23 @@ async def driver_accept_callback(update: Update, context: CallbackContext):
     updated_data = {'driver': driver, 'status': 'accepted'}
     response = await update_ride(ride_id, updated_data)
 
-    print(response)
     if response:
         await query.edit_message_text(
             text="Ride accepted!",
             reply_markup=None,
+            parse_mode='HTML'
+        )
+
+        passenger = current_ride_info.get('user', {})
+        user_id = passenger.get('telegramId', '')
+
+        await context.bot.send_message(
+            chat_id=user_id,
+            text=f"<b>Your Ride Request Accepted</b>\n\n"
+                f"<b>Driver:</b> {user_data.get('fullName', 'N/A')}\n"
+                f"<b>Phone:</b> {user_data.get('phone', '')}\n"
+                f"<b>Departure:</b> {current_ride_info.get('currentLocation')}\n"
+                f"<b>Destination:</b> {current_ride_info.get('destination')}.",
             parse_mode='HTML'
         )
 

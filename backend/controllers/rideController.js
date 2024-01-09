@@ -31,11 +31,13 @@ async function getRides(req, res) {
     for (const ride of rides) {
       const transformedRide = {
         _id: ride._id,
-        user: {
-          telegramId: ride.user.telegramId,
-          fullName: ride.user.fullName,
-          phone: ride.user.phone,
-        },
+        user: ride.user
+          ? {
+              telegramId: ride.user.telegramId,
+              fullName: ride.user.fullName,
+              phone: ride.user.phone,
+            }
+          : null,
         driver: ride.driver
           ? {
               telegramId: ride.driver.telegramId,
