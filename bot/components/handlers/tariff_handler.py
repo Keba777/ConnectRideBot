@@ -34,7 +34,7 @@ async def tariff_command(update: Update, context: CallbackContext):
 
 async def tariffs_page_callback(update: Update, context: CallbackContext):
     query = update.callback_query
-    query.answer()
+    await query.answer()
 
     page = int(query.data.split('#')[1])
 

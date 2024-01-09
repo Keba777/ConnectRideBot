@@ -17,7 +17,7 @@ async def profile_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
         )
 
         await update.message.reply_text(
-            f"Here's your profile information:\n\n{user_info_text}\n\nTo make changes, click the button below:",
+            f"👤Here's your profile information👤\n\n{user_info_text}\n\nTo make changes, click the button below.",
             reply_markup=profile_keyboard
         )
     else:

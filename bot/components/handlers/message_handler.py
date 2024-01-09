@@ -31,7 +31,8 @@ async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
         "/auth - Begin the authentication process\n"
         "/profile - Manage your profile\n"
         "/feedback - Submit feedback about the bot\n"
-        "/help - Display this help message"
+        "/help - Display this help message\n"
+        "/tariff" - "Get ride cost estimate"
     ).replace('!', r'\!').replace('.', r'\.').replace('#', r'\.')
 
     await update.message.reply_text(help_text, parse_mode='MarkdownV2')
