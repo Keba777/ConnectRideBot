@@ -26,6 +26,7 @@ from components.handlers.registration_handler import registration_handler
 from components.handlers.ride_register_handler import register_role_handler
 from components.handlers.profile_update_handler import update_handler
 from components.handlers.passenger_handler import handle_ride_history
+from components.handlers.tariff_handler import tariff_command, tariffs_page_callback
 from config import TOKEN
 
 
@@ -40,6 +41,7 @@ def main():
     app.add_handler(CommandHandler('info', info_command))
     app.add_handler(CommandHandler('profile', profile_command))
     app.add_handler(CommandHandler('start', start_command))
+    app.add_handler(CommandHandler('tariff', tariff_command))
 
     # Message handlers
     app.add_handlers(handlers={
@@ -75,6 +77,7 @@ def main():
         9: [CallbackQueryHandler(go_back_to_passenger_menu, pattern='back_passenger_menu')],
         10: [CallbackQueryHandler(go_back_to_history, pattern='back_history_page')],
         11: [CallbackQueryHandler(passenger_cancel_callback, pattern='^cancel#')],
+        12: [CallbackQueryHandler(tariffs_page_callback, pattern='^location#')],
     })
 
     # Error handling
