@@ -28,9 +28,11 @@ ride_history_keyboard = InlineKeyboardMarkup(
 
 
 cancel_button = InlineKeyboardButton(
-    'Cancel ride', callback_data='cancel#{}')
+    'Cancel Ride', callback_data='cancel#{}')
+get_receipt_button = InlineKeyboardButton(
+    'Get Receipt', callback_data='receipt#{}')
 go_back_button = InlineKeyboardButton(
-    'Go back', callback_data='back_history_page')
+    'Go Back', callback_data='back_history_page')
 
 
 def create_request_paginator(total_pages, current_page, data_pattern):
@@ -51,6 +53,7 @@ def create_complete_paginator(total_pages, current_page, data_pattern):
         current_page=current_page,
         data_pattern=data_pattern
     )
+    paginator.add_before(get_receipt_button)
     paginator.add_after(go_back_button)
 
     return paginator

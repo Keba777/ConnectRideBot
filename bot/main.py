@@ -10,6 +10,7 @@ from components.callbacks.driver_complete_callback import driver_complete_page_c
 from components.callbacks.passenger_ongoing_callback import passenger_ongoing_callback, passenger_ongoing_page_callback
 from components.callbacks.passenger_completed_callback import passenger_completed_callback, passenger_complete_page_callback
 from components.callbacks.passenger_callback import go_back_to_history, go_back_to_passenger_menu, passenger_cancel_callback
+from components.callbacks.receipt_callback import receipt_callback
 
 from components.handlers.auth_handler import auth_command
 from components.handlers.feedback_handler import feedback_command
@@ -76,6 +77,7 @@ def main():
         9: [CallbackQueryHandler(go_back_to_history, pattern='back_history_page')],
         10: [CallbackQueryHandler(passenger_cancel_callback, pattern='^cancel#')],
         11: [CallbackQueryHandler(tariffs_page_callback, pattern='^location#')],
+        12: [CallbackQueryHandler(receipt_callback, pattern='^receipt#')],
     })
 
     # Error handling
