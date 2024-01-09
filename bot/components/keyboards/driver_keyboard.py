@@ -13,6 +13,15 @@ driver_keyboard = ReplyKeyboardMarkup(
     resize_keyboard=True
 )
 
+driver_menu_keyboard = InlineKeyboardMarkup(
+    [
+        [InlineKeyboardButton("Accept ride request",
+                              callback_data='accept_ride_request')],
+        [InlineKeyboardButton("View Ongoing Rides",
+                              callback_data='view_accepted_rides')],
+    ]
+)
+
 
 accept_button = InlineKeyboardButton(
     'Accept request', callback_data='accept#{}')

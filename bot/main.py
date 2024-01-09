@@ -7,7 +7,7 @@ from telegram.ext import (
 from components.callbacks.driver_callback import driver_accept_callback, driver_complete_callback, driver_go_back_callback
 from components.callbacks.passenger_ongoing_callback import passenger_ongoing_callback, passenger_ongoing_page_callback
 from components.callbacks.passenger_completed_callback import passenger_completed_callback, passenger_complete_page_callback
-from components.callbacks.passenger_callback import passenger_go_back_callback
+from components.callbacks.passenger_callback import go_back_to_history, go_back_to_passenger_menu, passenger_cancel_callback
 
 from components.handlers.driver_handler import (
     driver_accept_command, driver_complete_command, driver_accept_page_callback, driver_complete_page_callback)
@@ -23,6 +23,7 @@ from components.handlers.profile_handler import profile_command
 from components.handlers.registration_handler import registration_handler
 from components.handlers.ride_register_handler import register_role_handler
 from components.handlers.profile_update_handler import update_handler
+from components.handlers.passenger_handler import handle_ride_history
 from config import TOKEN
 
 
@@ -44,6 +45,8 @@ def main():
             filters.TEXT & ~filters.COMMAND, driver_accept_command)],
         1: [MessageHandler(
             filters.TEXT & ~filters.COMMAND, driver_complete_command)],
+        2: [MessageHandler(
+            filters.TEXT & ~filters.COMMAND, handle_ride_history)],
     })
     # Message handlers
     app.add_handlers(handlers={
@@ -67,7 +70,9 @@ def main():
         6: [CallbackQueryHandler(passenger_ongoing_page_callback, pattern='^page#')],
         7: [CallbackQueryHandler(passenger_completed_callback, pattern='^view_completed_rides')],
         8: [CallbackQueryHandler(passenger_complete_page_callback, pattern='^page#')],
-        9: [CallbackQueryHandler(passenger_go_back_callback, pattern='back_passenger_menu')],
+        9: [CallbackQueryHandler(go_back_to_passenger_menu, pattern='back_passenger_menu')],
+        10: [CallbackQueryHandler(go_back_to_history, pattern='back_history_page')],
+        11: [CallbackQueryHandler(passenger_cancel_callback, pattern='^cancel#')],
     })
 
     # Error handling
