@@ -5,10 +5,11 @@ from telegram.ext import (
     ApplicationBuilder, CallbackQueryHandler, CommandHandler, MessageHandler, filters)
 
 from components.callbacks.driver_callback import driver_accept_callback, driver_complete_callback, driver_go_back_callback
-
+from components.callbacks.passenger_requested_callback import passenger_requested_callback, passenger_request_page_callback
 
 from components.handlers.driver_handler import (
     driver_accept_command, driver_complete_command, driver_accept_page_callback, driver_complete_page_callback)
+
 
 from components.handlers.auth_handler import auth_command
 from components.handlers.driver_rating_handler import submit_driver_rating
@@ -40,7 +41,9 @@ def main():
         0: [MessageHandler(
             filters.TEXT & ~filters.COMMAND, driver_accept_command)],
         1: [MessageHandler(
-            filters.TEXT & ~filters.COMMAND, driver_complete_command)]
+            filters.TEXT & ~filters.COMMAND, driver_complete_command)],
+        # 2: [MessageHandler(
+        #     filters.TEXT & ~filters.COMMAND, passenger_requested_command)]
     })
     # Message handlers
     app.add_handlers(handlers={
@@ -60,7 +63,9 @@ def main():
         2: [CallbackQueryHandler(driver_accept_callback, pattern='^accept#')],
         3: [CallbackQueryHandler(driver_complete_callback, pattern='^complete#')],
         4: [CallbackQueryHandler(driver_go_back_callback, pattern='back')],
-
+        # Change the pattern for passenger_requested_command and passenger_request_page_callback
+        5: [CallbackQueryHandler(passenger_requested_callback, pattern='^view_ongoing_rides')],
+        6: [CallbackQueryHandler(passenger_request_page_callback, pattern='^page#')],
     })
 
     # Error handling

@@ -2,7 +2,7 @@ from telegram import Update
 from telegram.ext import ContextTypes, CallbackContext
 from services.user_services import get_user
 from components.keyboards.registration_keyboard import start_keyboard
-from components.keyboards.passenger_keyboard import passenger_keyboard
+from components.keyboards.passenger_keyboard import passenger_keyboard, ride_history_keyboard
 from components.keyboards.driver_keyboard import driver_keyboard
 
 
@@ -16,7 +16,7 @@ async def passenger_menu(update: Update, context: CallbackContext, user_data: di
     await update.message.reply_text(
         f"👋 Welcome, {userName}! You are now in the Passenger Menu. "
         "Click on the buttons below to request a ride 🚗 or view your ride history 🗂️.",
-        reply_markup=passenger_keyboard
+        reply_markup=ride_history_keyboard
     )
 
 
