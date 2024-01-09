@@ -9,11 +9,9 @@ FULL_NAME, PHONE, ROLE = range(3)
 
 async def handle_update(update: Update, context: CallbackContext) -> int:
     if update.message.text.strip().lower() == "editprofile":
-        print("Edit Profile command received")
         await context.bot.send_message(chat_id=update.effective_chat.id, text="Please enter your full name:")
         return FULL_NAME
     else:
-        print("Ending conversation")
         return ConversationHandler.END
 
 
@@ -60,7 +58,7 @@ async def handle_role_input(update: Update, context: CallbackContext) -> int:
         await context.bot.send_message(chat_id=update.effective_chat.id, text="Invalid role. Please enter 'passenger' or 'driver' .")
         return ROLE
 
-update_handler = ConversationHandler(
+profile_update_handler = ConversationHandler(
     entry_points=[MessageHandler(
         filters.TEXT & ~filters.COMMAND, handle_update)],
     states={

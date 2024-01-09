@@ -24,7 +24,7 @@ from components.handlers.passenger_rating_handler import submit_passenger_rating
 from components.handlers.profile_handler import profile_command
 from components.handlers.user_registration_handler import user_registration_handler
 from components.handlers.ride_register_handler import register_role_handler
-from components.handlers.profile_update_handler import update_handler
+from components.handlers.profile_update_handler import profile_update_handler
 from components.handlers.passenger_handler import handle_ride_history
 from components.handlers.tariff_handler import tariff_command, tariffs_page_callback
 from config import TOKEN
@@ -49,7 +49,7 @@ def main():
         1: [submit_driver_rating],
         2: [submit_passenger_rating],
         3: [register_role_handler],
-        4: [update_handler]
+        4: [profile_update_handler]
     })
 
     # Message handlers
