@@ -5,28 +5,29 @@ from telegram.ext import (
     ApplicationBuilder, CallbackQueryHandler, CommandHandler, MessageHandler, filters)
 
 from components.callbacks.driver_callback import driver_accept_callback, driver_complete_callback, driver_go_back_callback
+from components.callbacks.driver_accept_callback import driver_accept_page_callback
+from components.callbacks.driver_complete_callback import driver_complete_page_callback
 from components.callbacks.passenger_ongoing_callback import passenger_ongoing_callback, passenger_ongoing_page_callback
 from components.callbacks.passenger_completed_callback import passenger_completed_callback, passenger_complete_page_callback
 from components.callbacks.passenger_callback import go_back_to_history, go_back_to_passenger_menu, passenger_cancel_callback
-from components.callbacks.driver_accept_callback import driver_accept_page_callback
-from components.callbacks.driver_complete_callback import driver_complete_page_callback
+
+from components.handlers.auth_handler import auth_command
+from components.handlers.feedback_handler import feedback_command
+from components.handlers.message_handler import error, help_command, info_command, start_command
+from components.handlers.tariff_handler import tariff_command, tariffs_page_callback
 
 from components.handlers.driver_handler import (
     driver_accept_command, driver_complete_command)
-
-
-from components.handlers.auth_handler import auth_command
 from components.handlers.driver_rating_handler import submit_driver_rating
-from components.handlers.feedback_handler import feedback_command
-from components.handlers.message_handler import (error, help_command,
-                                                 info_command, start_command)
+
+from components.handlers.passenger_handler import handle_ride_history
 from components.handlers.passenger_rating_handler import submit_passenger_rating
 from components.handlers.profile_handler import profile_command
+
 from components.handlers.user_registration_handler import user_registration_handler
-from components.handlers.ride_register_handler import register_role_handler
 from components.handlers.profile_update_handler import profile_update_handler
-from components.handlers.passenger_handler import handle_ride_history
-from components.handlers.tariff_handler import tariff_command, tariffs_page_callback
+from components.handlers.ride_register_handler import register_role_handler
+
 from config import TOKEN
 
 
