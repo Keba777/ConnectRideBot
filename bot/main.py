@@ -15,16 +15,14 @@ from components.callbacks.driver_feedback_callback import driver_feedback_page_c
 from components.callbacks.passenger_feedback_callback import passenger_get_feedback_callback, passenger_feedback_callback_handler
 
 from components.handlers.auth_handler import auth_command
-from components.handlers.feedback_handler import feedback_command
+from components.handlers.feedback_handler import feedback_conversation_handler
 from components.handlers.message_handler import error, help_command, info_command, start_command
 from components.handlers.tariff_handler import tariff_command, tariffs_page_callback
 
 from components.handlers.driver_handler import (
     driver_accept_command, driver_complete_command, driver_feedback_command)
-from components.handlers.driver_rating_handler import submit_driver_rating
 
 from components.handlers.passenger_handler import handle_ride_history
-from components.handlers.passenger_rating_handler import submit_passenger_rating
 from components.handlers.profile_handler import profile_command
 
 from components.handlers.user_registration_handler import user_registration_handler
@@ -40,7 +38,6 @@ def main():
 
     # Commands
     app.add_handler(CommandHandler('auth', auth_command))
-    app.add_handler(CommandHandler('feedback', feedback_command))
     app.add_handler(CommandHandler('help', help_command))
     app.add_handler(CommandHandler('info', info_command))
     app.add_handler(CommandHandler('profile', profile_command))
@@ -50,20 +47,19 @@ def main():
     # Conversation handlers
     app.add_handlers(handlers={
         0: [user_registration_handler],
-        1: [submit_driver_rating],
-        2: [submit_passenger_rating],
-        3: [register_role_handler],
-        4: [profile_update_handler],
-        5: [driver_complete_callback_handler],
-        6: [driver_feedback_callback_handler],
-        7: [passenger_feedback_callback_handler],
-        8: [MessageHandler(
+        1: [register_role_handler],
+        2: [profile_update_handler],
+        3: [driver_complete_callback_handler],
+        4: [driver_feedback_callback_handler],
+        5: [passenger_feedback_callback_handler],
+        6: [feedback_conversation_handler],
+        7: [MessageHandler(
             filters.TEXT & ~filters.COMMAND, driver_accept_command)],
-        9: [MessageHandler(
+        8: [MessageHandler(
             filters.TEXT & ~filters.COMMAND, driver_complete_command)],
-        10: [MessageHandler(
+        9: [MessageHandler(
             filters.TEXT & ~filters.COMMAND, handle_ride_history)],
-        11: [MessageHandler(
+        10: [MessageHandler(
             filters.TEXT & ~filters.COMMAND, driver_feedback_command)],
     })
 

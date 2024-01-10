@@ -1,62 +1,35 @@
 from telegram import Update
-from telegram.ext import ContextTypes, CallbackContext
-from services.user_services import get_user
-from components.keyboards.registration_keyboard import start_keyboard
-from components.keyboards.rate_keyboard import rate_us_keyboard, rate_passenger_keyboard
+from telegram.ext import (CallbackContext, ConversationHandler, MessageHandler,
+                          filters, CommandHandler)
+from services.feedback_services import create_feedback
+
+FEEDBACK = range(1)
 
 
-async def feedback_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    await rating_handler(update, context)
+async def feedback_command(update: Update, context: CallbackContext):
+    user_first_name = update.message.from_user.first_name
+    chat_id = update.effective_chat.id
+    welcome_message = f"Welcome, {user_first_name}! 👋 Share your feedback, thoughts, or suggestions about the bot."
+    await context.bot.send_message(chat_id, welcome_message)
+    return FEEDBACK
 
 
-async def passenger_feedback_menu(update: Update, context: CallbackContext, user_data: dict):
-    user = await get_user(update.effective_chat.id)
-    userName = user.get('fullName', 'N/A')
+async def handle_feedback_input(update: Update, context: CallbackContext):
+    feedback = update.message.text.strip()
+    response = create_feedback(feedback)
 
-    greeting_text = f"👋 Welcome, {userName}!"
-    feedback_prompt = "Please share your feedback with us. Your opinion is valuable. 💬"
-    rate_us_command = "To rate our service, click the button below."
-
-    full_message = f"{greeting_text}\n\n{feedback_prompt}\n\n{rate_us_command}"
-
-    await update.message.reply_text(
-        full_message,
-        reply_markup=rate_us_keyboard
-    )
-
-
-async def driver_feedback_menu(update: Update, context: CallbackContext, user_data: dict):
-    user = await get_user(update.effective_chat.id)
-    userName = user.get('fullName', 'N/A')
-
-    greeting_text = f"👋 Welcome, {userName}!"
-    feedback_prompt = "Please share your feedback with us. Your opinion is valuable. 💬"
-    rate_us_command = "To rate passenger, click the button below."
-
-    full_message = f"{greeting_text}\n\n{feedback_prompt}\n\n{rate_us_command}"
-
-    await update.message.reply_text(
-        full_message,
-        reply_markup=rate_passenger_keyboard
-    )
-
-
-async def rating_handler(update: Update, context: CallbackContext):
-    user_id = update.message.from_user.id
-    user_data_response = await get_user(user_id)
-
-    if user_data_response:
-        role = user_data_response.get('role', '')
-        if role == 'passenger':
-            await passenger_feedback_menu(update, context, user_data_response)
-        elif role == 'driver':
-            await driver_feedback_menu(update, context, user_data_response)
-        else:
-            await update.message.reply_text(
-                "❌ Invalid role. Please sign in with a valid role."
-            )
+    if response:
+        await context.bot.send_message(chat_id=update.effective_chat.id, text="Thank you so much for taking the time to share your feedback! 🙏 Your opinion is valuable and helps us improve.")
     else:
-        await update.message.reply_text(
-            "🚫 User does not exist. Please register with the button below.",
-            reply_markup=start_keyboard
-        )
+        await context.bot.send_message(chat_id=update.effective_chat.id, text="Oops! 😟 Something went wrong on our end. Please try submitting your feedback again later. We apologize for any inconvenience.")
+
+    context.user_data.clear()
+    return ConversationHandler.END
+
+feedback_conversation_handler = ConversationHandler(
+    entry_points=[CommandHandler('feedback', feedback_command)],
+    states={
+        FEEDBACK: [MessageHandler(filters.TEXT, handle_feedback_input)],
+    },
+    fallbacks=[CommandHandler('feedback', feedback_command)],
+)
