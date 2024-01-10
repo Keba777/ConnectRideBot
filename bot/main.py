@@ -4,13 +4,14 @@ from telegram import Update
 from telegram.ext import (
     ApplicationBuilder, CallbackQueryHandler, CommandHandler, MessageHandler, filters)
 
-from components.callbacks.driver_callback import driver_go_back_callback, driver_complete_callback_handler
+from components.callbacks.driver_callback import driver_go_back_callback
 from components.callbacks.driver_accept_callback import driver_accept_page_callback, driver_accept_callback
-from components.callbacks.driver_complete_callback import driver_complete_page_callback
+from components.callbacks.driver_complete_callback import driver_complete_page_callback, driver_complete_callback_handler
 from components.callbacks.passenger_ongoing_callback import passenger_ongoing_callback, passenger_ongoing_page_callback
 from components.callbacks.passenger_completed_callback import passenger_completed_callback, passenger_complete_page_callback
 from components.callbacks.passenger_callback import go_back_to_history, go_back_to_passenger_menu, passenger_cancel_callback
 from components.callbacks.receipt_callback import receipt_callback
+from components.callbacks.driver_feedback_callback import driver_feedback_page_callback, driver_feedback_callback_handler
 
 from components.handlers.auth_handler import auth_command
 from components.handlers.feedback_handler import feedback_command
@@ -18,7 +19,7 @@ from components.handlers.message_handler import error, help_command, info_comman
 from components.handlers.tariff_handler import tariff_command, tariffs_page_callback
 
 from components.handlers.driver_handler import (
-    driver_accept_command, driver_complete_command)
+    driver_accept_command, driver_complete_command, driver_feedback_command)
 from components.handlers.driver_rating_handler import submit_driver_rating
 
 from components.handlers.passenger_handler import handle_ride_history
@@ -53,12 +54,15 @@ def main():
         3: [register_role_handler],
         4: [profile_update_handler],
         5: [driver_complete_callback_handler],
-        6: [MessageHandler(
-            filters.TEXT & ~filters.COMMAND, driver_accept_command)],
+        6: [driver_feedback_callback_handler],
         7: [MessageHandler(
-            filters.TEXT & ~filters.COMMAND, driver_complete_command)],
+            filters.TEXT & ~filters.COMMAND, driver_accept_command)],
         8: [MessageHandler(
+            filters.TEXT & ~filters.COMMAND, driver_complete_command)],
+        9: [MessageHandler(
             filters.TEXT & ~filters.COMMAND, handle_ride_history)],
+        10: [MessageHandler(
+            filters.TEXT & ~filters.COMMAND, driver_feedback_command)],
     })
 
     # Callbacks
@@ -78,6 +82,7 @@ def main():
         10: [CallbackQueryHandler(passenger_cancel_callback, pattern='^cancel#')],
         11: [CallbackQueryHandler(tariffs_page_callback, pattern='^location#')],
         12: [CallbackQueryHandler(receipt_callback, pattern='^receipt#')],
+        13: [CallbackQueryHandler(driver_feedback_page_callback, pattern='^page#')],
     })
 
     # Error handling

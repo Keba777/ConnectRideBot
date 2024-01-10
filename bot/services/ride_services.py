@@ -48,8 +48,8 @@ async def update_ride(ride_id, updated_user_data):
         async with aiohttp.ClientSession() as session:
             async with session.put(url, json=updated_user_data) as response:
                 response.raise_for_status()
-                updated_user = await response.json()
-                return updated_user
+                updated_ride = await response.json()
+                return updated_ride
     except aiohttp.ClientError as e:
         logger.error(f"Error updating ride: {e}")
         return None
