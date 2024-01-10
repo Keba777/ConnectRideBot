@@ -15,7 +15,7 @@ async def driver_feedback_page_callback(update: Update, context: CallbackContext
     userId = user_data.get('_id')
 
     rides = await get_rides(userId)
-    ride_requests = filter_rides_by_status(rides, 'requested')
+    ride_requests = filter_rides_by_status(rides, 'completed')
 
     paginator = create_feedback_paginator(
         len(ride_requests), page, 'page#{page}')
@@ -44,7 +44,7 @@ async def driver_feedback_callback(update: Update, context: CallbackContext):
     current_ride_info = context.user_data.get('current_ride_info', {})
     driver_feedback = current_ride_info.get('driverFeedback', {})
 
-    if driver_feedback.get('rating') is None and driver_feedback.get('review') is None:
+    if driver_feedback is None or (driver_feedback.get('rating') is None and driver_feedback.get('review') is None):
         await context.bot.send_message(chat_id=update.effective_chat.id, text="Please enter your rating on a scale of 1 to 5.")
         return RATING
 
@@ -94,3 +94,33 @@ driver_feedback_callback_handler = ConversationHandler(
     fallbacks=[CallbackQueryHandler(
         driver_feedback_callback, pattern='^driver_provide_feedback#')],
 )
+
+
+async def driver_get_feedback_callback(update: Update, context: CallbackContext):
+    query = update.callback_query
+    await query.answer()
+
+    current_ride_info = context.user_data.get('current_ride_info', {})
+    print(current_ride_info)
+    user_feedback = current_ride_info.get('userFeedback', {})
+    print(user_feedback)
+
+    if user_feedback is None or (user_feedback.get('rating') is None and user_feedback.get('review') is None):
+
+        await context.bot.send_message(
+            chat_id=update.effective_chat.id,
+            text="No feedback has been provided for this ride yet. Feel free to share your thoughts!",
+        )
+    else:
+        rating = user_feedback.get('rating')
+        review = user_feedback.get('review')
+
+        feedback_info = f"<b>User Feedback</b>\n\n" \
+                        f"<b>Rating:</b> {rating}\n" \
+                        f"<b>Review:</b> {review}"
+
+        await context.bot.send_message(
+            chat_id=update.effective_chat.id,
+            text=feedback_info,
+            parse_mode='HTML'
+        )
