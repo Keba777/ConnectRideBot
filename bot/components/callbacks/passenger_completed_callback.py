@@ -31,6 +31,10 @@ async def passenger_completed_callback(update: Update, context: CallbackContext)
             reply_markup=paginator.markup,
             parse_mode='HTML'
         )
+    else:
+        await query.edit_message_text(
+            text="🚗 You have no completed ride requests.",
+        )
 
 
 async def passenger_complete_page_callback(update: Update, context: CallbackContext):

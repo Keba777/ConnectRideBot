@@ -32,6 +32,10 @@ async def passenger_ongoing_callback(update: Update, context: CallbackContext):
             reply_markup=paginator.markup,
             parse_mode='HTML'
         )
+    else:
+        await query.edit_message_text(
+            text="🚗 You have no ongoing ride requests. Use /start to explore options or initiate a new request.",
+        )
 
 
 async def passenger_ongoing_page_callback(update: Update, context: CallbackContext):
