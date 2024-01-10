@@ -4,6 +4,11 @@ import { User } from "./user.js";
 
 const validStatus = ["requested", "accepted", "completed", "canceled"];
 
+const feedbackSchema = {
+  rating: { type: Number, default: null, min: 1, max: 5 },
+  review: { type: String, default: null },
+};
+
 const rideSchema = new mongoose.Schema({
   user: {
     type: mongoose.Schema.Types.ObjectId,
@@ -19,6 +24,8 @@ const rideSchema = new mongoose.Schema({
   destination: { type: String, required: true },
   status: { type: String, enum: validStatus, default: "requested" },
   fare: { type: Number, default: null },
+  userFeedback: { type: feedbackSchema, default: {} },
+  driverFeedback: { type: feedbackSchema, default: {} },
 });
 
 const Ride = mongoose.model("Ride", rideSchema);
@@ -31,6 +38,14 @@ function validateRide(ride) {
     destination: Joi.string(),
     status: Joi.string().valid(...validStatus),
     fare: Joi.number().allow(null),
+    userFeedback: Joi.object({
+      rating: Joi.number().allow(null).min(1).max(5),
+      review: Joi.string().allow(null),
+    }),
+    driverFeedback: Joi.object({
+      rating: Joi.number().allow(null).min(1).max(5),
+      review: Joi.string().allow(null),
+    }),
   });
 
   return schema.validate(ride);

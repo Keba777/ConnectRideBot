@@ -14,6 +14,8 @@ async function createRide(req, res) {
       currentLocation: req.body.currentLocation,
       destination: req.body.destination,
       status: req.body.status,
+      userFeedback: {},
+      driverFeedback: {},
     });
 
     await ride.save();
@@ -49,6 +51,8 @@ async function getRides(req, res) {
         destination: ride.destination,
         status: ride.status,
         fare: ride.fare,
+        userFeedback: ride.userFeedback,
+        driverFeedback: ride.driverFeedback,
       };
       transformedRides.push(transformedRide);
     }
@@ -95,6 +99,8 @@ async function getRidesForUser(req, res) {
       destination: ride.destination,
       status: ride.status,
       fare: ride.fare,
+      userFeedback: ride.userFeedback,
+      driverFeedback: ride.driverFeedback,
     }));
 
     res.status(200).json(transformedRides);
