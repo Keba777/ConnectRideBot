@@ -12,6 +12,7 @@ from components.callbacks.passenger_completed_callback import passenger_complete
 from components.callbacks.passenger_callback import go_back_to_history, go_back_to_passenger_menu, passenger_cancel_callback
 from components.callbacks.receipt_callback import receipt_callback
 from components.callbacks.driver_feedback_callback import driver_feedback_page_callback, driver_feedback_callback_handler, driver_get_feedback_callback
+from components.callbacks.passenger_feedback_callback import passenger_get_feedback_callback, passenger_feedback_callback_handler
 
 from components.handlers.auth_handler import auth_command
 from components.handlers.feedback_handler import feedback_command
@@ -55,13 +56,14 @@ def main():
         4: [profile_update_handler],
         5: [driver_complete_callback_handler],
         6: [driver_feedback_callback_handler],
-        7: [MessageHandler(
-            filters.TEXT & ~filters.COMMAND, driver_accept_command)],
+        7: [passenger_feedback_callback_handler],
         8: [MessageHandler(
-            filters.TEXT & ~filters.COMMAND, driver_complete_command)],
+            filters.TEXT & ~filters.COMMAND, driver_accept_command)],
         9: [MessageHandler(
-            filters.TEXT & ~filters.COMMAND, handle_ride_history)],
+            filters.TEXT & ~filters.COMMAND, driver_complete_command)],
         10: [MessageHandler(
+            filters.TEXT & ~filters.COMMAND, handle_ride_history)],
+        11: [MessageHandler(
             filters.TEXT & ~filters.COMMAND, driver_feedback_command)],
     })
 
@@ -83,7 +85,8 @@ def main():
         11: [CallbackQueryHandler(tariffs_page_callback, pattern='^location#')],
         12: [CallbackQueryHandler(receipt_callback, pattern='^receipt#')],
         13: [CallbackQueryHandler(driver_feedback_page_callback, pattern='^page#')],
-        14: [CallbackQueryHandler(driver_get_feedback_callback, pattern='^driver_get_feedback#')]
+        14: [CallbackQueryHandler(driver_get_feedback_callback, pattern='^driver_get_feedback#')],
+        15: [CallbackQueryHandler(passenger_get_feedback_callback, pattern='^user_get_feedback#')]
 
     })
 

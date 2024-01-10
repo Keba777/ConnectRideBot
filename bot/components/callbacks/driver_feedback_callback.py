@@ -101,9 +101,7 @@ async def driver_get_feedback_callback(update: Update, context: CallbackContext)
     await query.answer()
 
     current_ride_info = context.user_data.get('current_ride_info', {})
-    print(current_ride_info)
     user_feedback = current_ride_info.get('userFeedback', {})
-    print(user_feedback)
 
     if user_feedback is None or (user_feedback.get('rating') is None and user_feedback.get('review') is None):
 
@@ -115,9 +113,9 @@ async def driver_get_feedback_callback(update: Update, context: CallbackContext)
         rating = user_feedback.get('rating')
         review = user_feedback.get('review')
 
-        feedback_info = f"<b>User Feedback</b>\n\n" \
-                        f"<b>Rating:</b> {rating}\n" \
-                        f"<b>Review:</b> {review}"
+        feedback_info = f"<b>🚕 User Feedback 🚕</b>\n\n" \
+                        f"<b>⭐️ Rating:</b> {rating}\n" \
+                        f"<b>📝 Review:</b> {review}"
 
         await context.bot.send_message(
             chat_id=update.effective_chat.id,
