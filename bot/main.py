@@ -32,7 +32,7 @@ from components.handlers.ride_register_handler import register_role_handler
 from config import TOKEN
 
 
-def main():
+async def main():
     print("Starting bot...")
     app = ApplicationBuilder().token(TOKEN).build()
 
