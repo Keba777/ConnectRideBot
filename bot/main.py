@@ -1,4 +1,4 @@
-import asyncio
+
 
 from telegram import Update
 from telegram.ext import (
@@ -32,7 +32,7 @@ from components.handlers.ride_register_handler import register_role_handler
 from config import TOKEN
 
 
-async def main():
+def main():
     print("Starting bot...")
     app = ApplicationBuilder().token(TOKEN).build()
 
@@ -86,12 +86,9 @@ async def main():
 
     })
 
-    # Error handling
-    app.add_error_handler(error)
-
     print("Polling...")
-    await app.run_polling(allowed_updates=Update.ALL_TYPES)
+    app.run_polling(allowed_updates=Update.ALL_TYPES)
 
 
 if __name__ == "__main__":
-    asyncio.run(main())
+    main()
