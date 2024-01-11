@@ -1,4 +1,4 @@
-
+import asyncio
 
 from telegram import Update
 from telegram.ext import (
@@ -86,8 +86,11 @@ def main():
 
     })
 
+    # Error handling
+    app.add_error_handler(error)
+
     print("Polling...")
-    app.run_polling(allowed_updates=Update.ALL_TYPES)
+    asyncio.run(app.run_polling(allowed_updates=Update.ALL_TYPES))
 
 
 if __name__ == "__main__":
