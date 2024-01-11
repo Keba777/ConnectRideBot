@@ -90,8 +90,8 @@ async def main():
     app.add_error_handler(error)
 
     print("Polling...")
-    asyncio.run(app.run_polling(allowed_updates=Update.ALL_TYPES))
+    await app.run_polling(allowed_updates=Update.ALL_TYPES)
 
 
 if __name__ == "__main__":
-    await main()
+    asyncio.run(main())
