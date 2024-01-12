@@ -1,40 +1,38 @@
 import asyncio
 
-from telegram import Update
 from telegram.ext import (
     ApplicationBuilder, CallbackQueryHandler, CommandHandler, MessageHandler, filters)
+from telegram import Update
 
-from components.callbacks.driver_callback import driver_go_back_callback
-from components.callbacks.driver_accept_callback import driver_accept_page_callback, driver_accept_callback
-from components.callbacks.driver_complete_callback import driver_complete_page_callback, driver_complete_callback_handler
-from components.callbacks.passenger_ongoing_callback import passenger_ongoing_callback, passenger_ongoing_page_callback
-from components.callbacks.passenger_completed_callback import passenger_completed_callback, passenger_complete_page_callback
-from components.callbacks.passenger_callback import go_back_to_history, go_back_to_passenger_menu, passenger_cancel_callback
-from components.callbacks.receipt_callback import receipt_callback
-from components.callbacks.driver_feedback_callback import driver_feedback_page_callback, driver_feedback_callback_handler, driver_get_feedback_callback
-from components.callbacks.passenger_feedback_callback import passenger_get_feedback_callback, passenger_feedback_callback_handler
-
-from components.handlers.auth_handler import auth_command
-from components.handlers.feedback_handler import feedback_conversation_handler
-from components.handlers.message_handler import error, help_command, info_command, start_command
-from components.handlers.tariff_handler import tariff_command, tariffs_page_callback
-
+from components.handlers.ride_register_handler import register_role_handler
+from components.handlers.profile_update_handler import profile_update_handler
+from components.handlers.user_registration_handler import user_registration_handler
+from components.handlers.profile_handler import profile_command
+from components.handlers.passenger_handler import handle_ride_history
 from components.handlers.driver_handler import (
     driver_accept_command, driver_complete_command, driver_feedback_command)
+from components.handlers.tariff_handler import tariff_command, tariffs_page_callback
+from components.handlers.message_handler import error, help_command, info_command, start_command
+from components.handlers.feedback_handler import feedback_conversation_handler
+from components.handlers.auth_handler import auth_command
+from components.callbacks.passenger_feedback_callback import passenger_get_feedback_callback, passenger_feedback_callback_handler
+from components.callbacks.driver_feedback_callback import driver_feedback_page_callback, driver_feedback_callback_handler, driver_get_feedback_callback
+from components.callbacks.receipt_callback import receipt_callback
+from components.callbacks.passenger_callback import go_back_to_history, go_back_to_passenger_menu, passenger_cancel_callback
+from components.callbacks.passenger_completed_callback import passenger_completed_callback, passenger_complete_page_callback
+from components.callbacks.passenger_ongoing_callback import passenger_ongoing_callback, passenger_ongoing_page_callback
+from components.callbacks.driver_complete_callback import driver_complete_page_callback, driver_complete_callback_handler
+from components.callbacks.driver_accept_callback import driver_accept_page_callback, driver_accept_callback
+from components.callbacks.driver_callback import driver_go_back_callback
 
-from components.handlers.passenger_handler import handle_ride_history
-from components.handlers.profile_handler import profile_command
-
-from components.handlers.user_registration_handler import user_registration_handler
-from components.handlers.profile_update_handler import profile_update_handler
-from components.handlers.ride_register_handler import register_role_handler
-
-from config import TOKEN
+import os
+from dotenv import load_dotenv
+load_dotenv()
 
 
 def main():
     print("Starting bot...")
-    app = ApplicationBuilder().token(TOKEN).build()
+    app = ApplicationBuilder().token(os.getenv('TOKEN')).build()
 
     # Commands
     app.add_handler(CommandHandler('auth', auth_command))

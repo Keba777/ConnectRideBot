@@ -1,5 +1,8 @@
 import requests
-from config import API_URL
+from dotenv import load_dotenv
+import os
+load_dotenv()
+API_URL = os.getenv('API_URL')
 
 
 def create_feedback(feedback):

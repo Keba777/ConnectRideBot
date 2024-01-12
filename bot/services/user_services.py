@@ -1,9 +1,12 @@
+from dotenv import load_dotenv
+import os
 import requests
-from config import API_URL
 import aiohttp
 import logging
 
 logger = logging.getLogger(__name__)
+load_dotenv()
+API_URL = os.getenv('API_URL')
 
 
 def register_user(telegram_id, full_name, phone, role):
